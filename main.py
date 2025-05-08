@@ -14,7 +14,7 @@ HEADLESS_MODE = False
 ATTACHMENTS = os.listdir("assets")
 
 if __name__ == "__main__":
-    '''
+
     send_individual_contact(
         phone_number=PHONE_NUMBER,
         message=MESSAGE,
@@ -31,4 +31,4 @@ if __name__ == "__main__":
         pc_name=PC_USER_NAME,
         attachments=ATTACHMENTS
     )
-    
+    '''

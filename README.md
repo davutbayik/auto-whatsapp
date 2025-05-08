@@ -71,7 +71,7 @@ import os
 from autoWhatsApp import send_individual_contact
 
  send_individual_contact(
-     phone_number="+905xxxxxxxxx,
+     phone_number="+905xxxxxxxxx",
      message="Hello, this is an automated message sent via autoWhatsApp module.",
      headless=True,
      attachments=os.listdir("assets") # Send all the files in the attachments folder
@@ -84,7 +84,7 @@ import os
 from autoWhatsApp import send_multiple_contacts
 
  send_multiple_contacts(
-     phone_number=["+905xxxxxxxxx, "+905yyyyyyyyy]
+     phone_number=["+905xxxxxxxxx, "+905yyyyyyyyy"]
      message="Hello, this is an automated message sent via autoWhatsApp module.",
      headless=True,
      attachments=os.listdir("assets") # Send all the files in the attachments folder

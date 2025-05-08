@@ -42,24 +42,23 @@ Automate WhatsApp messaging using Python and Selenium.
 
 ## 🧪 Usage
 
-1. 🖥️ **Enter your pc user name:**
-   - Write `PC_USER_NAME` parameter as your pc user name for automatic logins
-
-2. 📝 **Prepare your message and recipients:**
+1. 📝 **Prepare your message and recipients:**
    - Edit `main.py` to specify the message content and list of recipients.
 
-3. 🔗 **Add attachments:**
+2. 🔗 **Add attachments:**
    - If you have any attachments to include the message, add them to `assets` folder.
 
-4. ▶️ **Run the script:**
+3. ▶️ **Run the script:**
    ```bash
    python autoWhatsApp.py
    ```
 
-5. 📲 **Scan the QR Code:**
+4. 📲 **Scan the QR Code:**
+   - Set `HEADLESS_MODE=False` before the first use of the application.
    - A browser window will open directing to WhatsApp Web.
    - Scan the QR code with your WhatsApp mobile app to log in.
    - After initial QR Scan, the app will automatically logging in to your WhatsApp account unless you delete the connection from your phone.
+   - You can set `HEADLESS_MODE=True` for a better experience after an initial successful QR login.
 
 6. 📤 **Automated messaging:**
    - Once logged in, the script will automatically send the specified messages and attachments to the listed contacts one by one.

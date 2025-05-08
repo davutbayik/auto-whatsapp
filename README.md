@@ -60,8 +60,36 @@ Automate WhatsApp messaging using Python and Selenium.
    - After initial QR Scan, the app will automatically logging in to your WhatsApp account unless you delete the connection from your phone.
    - You can set `HEADLESS_MODE=True` for a better experience after an initial successful QR login.
 
-6. 📤 **Automated messaging:**
+5. 📤 **Automated messaging:**
    - Once logged in, the script will automatically send the specified messages and attachments to the listed contacts one by one.
+
+## 📈 Examples
+
+### 1. Send message to an individual contact:
+```python
+import os
+from autoWhatsApp import send_individual_contact
+
+ send_individual_contact(
+     phone_number="+905xxxxxxxxx,
+     message="Hello, this is an automated message sent via autoWhatsApp module.",
+     headless=True,
+     attachments=os.listdir("assets") # Send all the files in the attachments folder
+ )
+```
+
+### 2. Send message to multiple contacts one-by-one:
+```python
+import os
+from autoWhatsApp import send_multiple_contacts
+
+ send_multiple_contacts(
+     phone_number=["+905xxxxxxxxx, "+905yyyyyyyyy]
+     message="Hello, this is an automated message sent via autoWhatsApp module.",
+     headless=True,
+     attachments=os.listdir("assets") # Send all the files in the attachments folder
+ )
+```
 
 ## 📄 License
 

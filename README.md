@@ -43,7 +43,7 @@ Automate WhatsApp messaging using Python and Selenium.
 ## 🧪 Usage
 
 1. 🖥️ **Enter your pc user name:**
-   - Edit `PC_USER_NAME` parameter for automatic logins
+   - Write `PC_USER_NAME` parameter as your pc user name for automatic logins
 
 2. 📝 **Prepare your message and recipients:**
    - Edit `main.py` to specify the message content and list of recipients.

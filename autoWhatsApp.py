@@ -111,7 +111,13 @@ class autoWhatsApp():
         except:
             return False
 
-def start_auto_whatsapp(phone_number, message, headless, attachments=[]):
+def send_individual_contact(phone_number: str, message: str, headless: str, attachments: list=[]):
+
+    if type(phone_number) == str:
+        pass
+    else:
+        logging.error("Please give a single phone number! Process ended.")
+        return None
 
     if is_valid_phone_number(phone_number):
         # If an attachment will be sent, put it into 'assets' folder
@@ -125,9 +131,7 @@ def start_auto_whatsapp(phone_number, message, headless, attachments=[]):
         while True: # While loop in case WhatsApp acoount is logged out and needed to scan a qr code
 
             if autoWhatsApp_client.checkLogout(): # Check if whether WhatsApp Web account is closed
-                logging.warning('''Whatsapp closed on the browser.
-                                    Please rerun in browser mode (headless=False) and scan the QR code!
-                                ''')
+                logging.warning('''Whatsapp closed on the browser. Please rerun in browser mode (HEADLESS_MODE=False) and scan the QR code!''')
 
             else:
                 logging.info("Successfully logged in to Whatsapp!")
@@ -140,7 +144,7 @@ def start_auto_whatsapp(phone_number, message, headless, attachments=[]):
                     time.sleep(1)
                 except:
                     pass
-                        
+                
                 autoWhatsApp_client.open_chat(phone_number)
                 
                 # Write text messages (string or a list of strings)
@@ -160,5 +164,61 @@ def start_auto_whatsapp(phone_number, message, headless, attachments=[]):
                 autoWhatsApp_client.driver.close() # Close the chromedriver
                 break   
     else:
-        logging.error("Phone number is not valid!")
+        logging.error(f"Phone number {phone_number} is not valid! Process ended.")
+
+def send_multiple_contact(phone_numbers: list, message: str, headless: str, attachments: list=[]):
+
+    if type(phone_numbers) == list:
+        pass
+    else:
+        logging.error("Please give a list of phone numbers for multiple messaging! Process ended.")
+        return None
+
+    # If an attachment will be sent, put it into 'assets' folder
+    if attachments:
+        attachments = [os.path.join(os.getcwd(), "assets", file_name) for file_name in attachments] # Convert files to their absolute path
+
+    profile_path = f"C:/Users/{PC_USER_NAME}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
+    autoWhatsApp_client = autoWhatsApp(profile_path, headless=headless) # Initialize a autoWhatsApp client
+
+    autoWhatsApp_client.open_chat(phone_numbers[0])# Open a chat for the given phone number
+    while True: # While loop in case WhatsApp acoount is logged out and needed to scan a qr code
+
+        if autoWhatsApp_client.checkLogout(): # Check if whether WhatsApp Web account is closed
+            logging.warning('''Whatsapp closed on the browser. Please rerun in browser mode (HEADLESS_MODE=False) and scan the QR code!''')
+
+        else:
+            logging.info("Successfully logged in to Whatsapp!")
+            time.sleep(1)
+            
+            # Eliminate 'A fresh look for WhatsApp Web' popup window if occurs
+            try:
+                popup = autoWhatsApp_client.driver.find_element(By.CLASS_NAME, "x78zum5")
+                popup.find_element(By.TAG_NAME, "button").click()
+                time.sleep(1)
+            except:
+                pass
+            
+            for phone_number in phone_numbers:
+                if is_valid_phone_number(phone_number):
+                    
+                    autoWhatsApp_client.open_chat(phone_number)
+                    
+                    # Write text messages (string or a list of strings)
+                    autoWhatsApp_client.write_text(message)
+
+                    # Add files if any
+                    if attachments:
+                        autoWhatsApp_client.upload_file(attachments) # Upload a file (image, document etc.)
+                    
+                    # Send message
+                    try:
+                        autoWhatsApp_client.send_message() # Send the message
+                        logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
+                    except:
+                        logging.error(f"Error while sending message to number: {phone_number}")
+                else:
+                    logging.error(f"The phone number: {phone_number} is not valid! Passing by.")
         
+            autoWhatsApp_client.driver.close() # Close the chromedriver
+            break

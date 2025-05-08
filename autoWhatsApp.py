@@ -54,7 +54,7 @@ class autoWhatsApp(): # Custom class for automating whatsapp
 
         self.driver = webdriver.Chrome(options=options)
         self.wait = WebDriverWait(self.driver, 100000) # Wait before timeout exception
-        self.logout_wait = WebDriverWait(self.driver, 60) # Wait until page loads anc checks whether account is logged out
+        self.logout_wait = WebDriverWait(self.driver, 10) # Wait until QR scan page loads anc checks whether account is logged out
         self.driver.get(f"https://web.whatsapp.com") # Open chat for the given number
 
     def open_chat(self, number):

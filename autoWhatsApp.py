@@ -53,8 +53,8 @@ class autoWhatsApp(): # Custom class for automating whatsapp
             options.add_argument('--headless=new') # Use headless browser
 
         self.driver = webdriver.Chrome(options=options)
-        self.wait = WebDriverWait(self.driver, 100000) # Wait 100 seconds before timeout exception
-        self.logout_wait = WebDriverWait(self.driver, 10) # Wait until page loads anc checks whether account is logged out
+        self.wait = WebDriverWait(self.driver, 100000) # Wait before timeout exception
+        self.logout_wait = WebDriverWait(self.driver, 60) # Wait until page loads anc checks whether account is logged out
         self.driver.get(f"https://web.whatsapp.com") # Open chat for the given number
 
     def open_chat(self, number):
@@ -101,7 +101,6 @@ class autoWhatsApp(): # Custom class for automating whatsapp
 
     def checkLogout(self):
     
-        time.sleep(5)
         try:
             self.logout_wait.until(EC.presence_of_element_located((By.XPATH, '//*[@aria-label="Scan this QR code to link a device!"]')))
             return True
@@ -130,7 +129,8 @@ def send_individual_contact(phone_number: str, message: str, headless: str, atta
 
             if autoWhatsApp_client.checkLogout(): # Check if whether WhatsApp Web account is closed
                 logging.warning('''Whatsapp closed on the browser. Please rerun in browser mode (HEADLESS_MODE=False) and scan the QR code!''')
-
+                time.sleep(5)
+                
             else:
                 logging.info("Successfully logged in to Whatsapp!")
                 time.sleep(1)
@@ -178,12 +178,13 @@ def send_multiple_contacts(phone_numbers: list, message: str, headless: str, att
 
     autoWhatsApp_client = autoWhatsApp(headless=headless) # Initialize a autoWhatsApp client
 
-    autoWhatsApp_client.open_chat(phone_numbers[0])# Open a chat for the given phone number
+    autoWhatsApp_client.open_chat(phone_numbers[0]) # Open a chat for the given phone number
     while True: # While loop in case WhatsApp acoount is logged out and needed to scan a qr code
 
         if autoWhatsApp_client.checkLogout(): # Check if whether WhatsApp Web account is closed
             logging.warning('''Whatsapp closed on the browser. Please rerun in browser mode (HEADLESS_MODE=False) and scan the QR code!''')
-
+            time.sleep(5)
+            
         else:
             logging.info("Successfully logged in to Whatsapp!")
             time.sleep(1)

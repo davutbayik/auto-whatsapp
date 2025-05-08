@@ -9,8 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-
-#Validates and normalizes an international phone numbers
+# Validates and normalizes an international phone numbers
 def is_valid_phone_number(phone_number):
  
     # Remove spaces and dashes
@@ -34,9 +33,7 @@ logging.basicConfig(
     ]
 )
 
-PC_USER_NAME = "davutbayik"
-
-class autoWhatsApp():
+class autoWhatsApp(): # Custom class for automating whatsapp
 
     def __init__(self, profile_path, headless=True):
 
@@ -111,7 +108,8 @@ class autoWhatsApp():
         except:
             return False
 
-def send_individual_contact(phone_number: str, message: str, headless: str, attachments: list=[]):
+# Functions for sending message to the custom class
+def send_individual_contact(phone_number: str, message: str, headless: str, pc_name, attachments: list=[]):
 
     if type(phone_number) == str:
         pass
@@ -124,7 +122,7 @@ def send_individual_contact(phone_number: str, message: str, headless: str, atta
         if attachments:
             attachments = [os.path.join(os.getcwd(), "assets", file_name) for file_name in attachments] # Convert files to their absolute path
 
-        profile_path = f"C:/Users/{PC_USER_NAME}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
+        profile_path = f"C:/Users/{pc_name}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
         autoWhatsApp_client = autoWhatsApp(profile_path, headless=headless) # Initialize a autoWhatsApp client
 
         autoWhatsApp_client.open_chat(phone_number)# Open a chat for the given phone number
@@ -166,7 +164,7 @@ def send_individual_contact(phone_number: str, message: str, headless: str, atta
     else:
         logging.error(f"Phone number {phone_number} is not valid! Process ended.")
 
-def send_multiple_contact(phone_numbers: list, message: str, headless: str, attachments: list=[]):
+def send_multiple_contacts(phone_numbers: list, message: str, headless: str, pc_name, attachments: list=[]):
 
     if type(phone_numbers) == list:
         pass
@@ -178,7 +176,7 @@ def send_multiple_contact(phone_numbers: list, message: str, headless: str, atta
     if attachments:
         attachments = [os.path.join(os.getcwd(), "assets", file_name) for file_name in attachments] # Convert files to their absolute path
 
-    profile_path = f"C:/Users/{PC_USER_NAME}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
+    profile_path = f"C:/Users/{pc_name}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
     autoWhatsApp_client = autoWhatsApp(profile_path, headless=headless) # Initialize a autoWhatsApp client
 
     autoWhatsApp_client.open_chat(phone_numbers[0])# Open a chat for the given phone number

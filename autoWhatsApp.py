@@ -35,15 +35,16 @@ logging.basicConfig(
 
 class autoWhatsApp(): # Custom class for automating whatsapp
 
-    def __init__(self, profile_path, headless=True):
+    def __init__(self, headless=True):
 
         # Setup Chrome options
         options = webdriver.ChromeOptions()
 
-        options.add_argument(f"user-data-dir={profile_path}") # Whatsapp profile path for automatic logins through chromedriver
         current_dir_path = os.getcwd()
         profile = os.path.join(current_dir_path, "profile", "wpp")
-        options.add_argument(f"user-data-dir={profile}") # Copy chrome profile folder
+        
+        # Copy chrome profile folder to enable automatic logins after first QR scan
+        options.add_argument(f"user-data-dir={profile}")
         
         options.add_argument("--start-maximized")
         options.add_argument('--log-level=3')
@@ -109,7 +110,7 @@ class autoWhatsApp(): # Custom class for automating whatsapp
             return False
 
 # Functions for sending message to the custom class
-def send_individual_contact(phone_number: str, message: str, headless: str, pc_name, attachments: list=[]):
+def send_individual_contact(phone_number: str, message: str, headless: str, attachments: list=[]):
 
     if type(phone_number) == str:
         pass
@@ -122,8 +123,7 @@ def send_individual_contact(phone_number: str, message: str, headless: str, pc_n
         if attachments:
             attachments = [os.path.join(os.getcwd(), "assets", file_name) for file_name in attachments] # Convert files to their absolute path
 
-        profile_path = f"C:/Users/{pc_name}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
-        autoWhatsApp_client = autoWhatsApp(profile_path, headless=headless) # Initialize a autoWhatsApp client
+        autoWhatsApp_client = autoWhatsApp(headless=headless) # Initialize a autoWhatsApp client
 
         autoWhatsApp_client.open_chat(phone_number)# Open a chat for the given phone number
         while True: # While loop in case WhatsApp acoount is logged out and needed to scan a qr code
@@ -164,7 +164,7 @@ def send_individual_contact(phone_number: str, message: str, headless: str, pc_n
     else:
         logging.error(f"Phone number {phone_number} is not valid! Process ended.")
 
-def send_multiple_contacts(phone_numbers: list, message: str, headless: str, pc_name, attachments: list=[]):
+def send_multiple_contacts(phone_numbers: list, message: str, headless: str, attachments: list=[]):
 
     if type(phone_numbers) == list:
         pass
@@ -176,8 +176,7 @@ def send_multiple_contacts(phone_numbers: list, message: str, headless: str, pc_
     if attachments:
         attachments = [os.path.join(os.getcwd(), "assets", file_name) for file_name in attachments] # Convert files to their absolute path
 
-    profile_path = f"C:/Users/{pc_name}/AppData/Local/Google/Chrome/User Data" # Add profile folder for enabling automatic logins after first QR scan
-    autoWhatsApp_client = autoWhatsApp(profile_path, headless=headless) # Initialize a autoWhatsApp client
+    autoWhatsApp_client = autoWhatsApp(headless=headless) # Initialize a autoWhatsApp client
 
     autoWhatsApp_client.open_chat(phone_numbers[0])# Open a chat for the given phone number
     while True: # While loop in case WhatsApp acoount is logged out and needed to scan a qr code

@@ -1,4 +1,4 @@
-# 🚀 Auto WhatsApp 
+# 📲🤖 Auto WhatsApp 
 
 Automate WhatsApp messaging using Python and Selenium.
 

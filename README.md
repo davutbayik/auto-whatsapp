@@ -14,8 +14,8 @@ Automate WhatsApp messaging using Python and Selenium.
 
 ## ✨ Features
 
-- 🤖 Automated sending of messages via WhatsApp Web
-- 👥 Support for sending messages to individual or multiple contacts
+- 🤖 Automated message sending via WhatsApp Web
+- 👥 Supports for sending messages to individual or multiple contacts
 - ✏️ Customizable message content
 - 📎 Allows single or multiple attachments upload
 - 🌐 Utilizes Selenium for browser automation

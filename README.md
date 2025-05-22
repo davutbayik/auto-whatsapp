@@ -64,7 +64,7 @@ Automate WhatsApp messaging using Python and Selenium.
    - Once logged in, the script will automatically send the specified messages and attachments to the listed contacts one by one.
 
 ⚠️ **Important:**
-   - Change `SEND_BUTTON_NAME` variable to your WhatsApp Web account's display language. 
+   - Change `SEND_BUTTON_NAME` variable in `autoWhatsApp.py` file to your WhatsApp Web account's display language. 
    For example `SEND_BUTTON_NAME = 'Send'` for English and `SEND_BUTTON_NAME = 'Gönder'` for Turkish languages.
    If the word not matches to your language then the program may fail.
 

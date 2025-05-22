@@ -8,6 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+# XPATH name of 'Send Button' for English WhatsApp account. Change to your language if your whatsapp account is in another language
+SEND_BUTTON_NAME = 'Send'
+
 # Validates and normalizes an international phone numbers
 def is_valid_phone_number(phone_number):
  
@@ -48,16 +51,18 @@ class autoWhatsApp(): # Custom class for automating whatsapp
         options.add_argument("--start-maximized")
         options.add_argument('--log-level=3')
         
-        if headless == True:
+        if headless:
             options.add_argument('--headless=new') # Use headless browser
 
         self.driver = webdriver.Chrome(options=options)
         self.wait = WebDriverWait(self.driver, 100000) # Wait before timeout exception
         
+        self.send_button_name = SEND_BUTTON_NAME
+        
         # Wait until QR scan page loads anc checks whether account is logged out
         self.logout_wait = WebDriverWait(self.driver, 5) # Should be increased in case of slow internet or old operating system.
         
-        self.driver.get(f"https://web.whatsapp.com") # Open chat for the given number
+        self.driver.get("https://web.whatsapp.com") # Open chat for the given number
 
     def open_chat(self, number):
         self.driver.get(f"https://web.whatsapp.com/send?phone='{number}'") # Open chat for the given number
@@ -69,7 +74,7 @@ class autoWhatsApp(): # Custom class for automating whatsapp
 
         message_box.send_keys(Keys.DELETE) # Delete all previous messages if any		
 
-        if type(message) == list:
+        if type(message) is list:
             for msg in message:
                 message_box.send_keys(msg) # Write messages line by line by sending as a list of strings
                 time.sleep(0.5)
@@ -94,9 +99,9 @@ class autoWhatsApp(): # Custom class for automating whatsapp
     def send_message(self):
     
         try:
-            self.driver.find_element(By.XPATH, "//button[@aria-label='Send']").click() # Click send text button
+            self.driver.find_element(By.XPATH, f"//button[@aria-label='{self.send_button_name}']").click() # Click send text button
         except:
-            self.driver.find_element(By.XPATH, "//div[@aria-label='Send']").click() # Click send file button
+            self.driver.find_element(By.XPATH, f"//div[@aria-label='{self.send_button_name}']").click() # Click send file button
 
         time.sleep(2)
         self.wait.until(EC.invisibility_of_element_located((By.XPATH, "//span[@aria-label=' Pending ']"))) # Wait until sending (pending) icon disappears
@@ -113,7 +118,7 @@ class autoWhatsApp(): # Custom class for automating whatsapp
 # Functions for sending message to the custom class
 def send_individual_contact(phone_number: str, message: str, headless: str, attachments: list=[]):
 
-    if type(phone_number) == str:
+    if type(phone_number) is str:
         pass
     else:
         logging.error("Please give a single phone number! Process ended.")
@@ -158,8 +163,9 @@ def send_individual_contact(phone_number: str, message: str, headless: str, atta
                 try:
                     autoWhatsApp_client.send_message() # Send the message
                     logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
-                except:
-                    logging.error(f"Error while sending message to number: {phone_number}")
+                except Exception as e:
+                    logging.error(f"Encountered an Error while sending message to number: {phone_number}")
+                    logging.error(f"{e}")
 
                 autoWhatsApp_client.driver.close() # Close the chromedriver
                 break   
@@ -168,7 +174,7 @@ def send_individual_contact(phone_number: str, message: str, headless: str, atta
 
 def send_multiple_contacts(phone_numbers: list, message: str, headless: str, attachments: list=[]):
 
-    if type(phone_numbers) == list:
+    if type(phone_numbers) is list:
         pass
     else:
         logging.error("Please give a list of phone numbers for multiple messaging! Process ended.")
@@ -210,15 +216,16 @@ def send_multiple_contacts(phone_numbers: list, message: str, headless: str, att
                     # Add files if any
                     if attachments:
                         autoWhatsApp_client.upload_file(attachments) # Upload a file (image, document etc.)
-                    
+
                     # Send message
                     try:
                         autoWhatsApp_client.send_message() # Send the message
                         logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
-                    except:
-                        logging.error(f"Error while sending message to number: {phone_number}")
+                    except Exception as e:
+                        logging.error(f"Encountered an Error while sending message to number: {phone_number}")
+                        logging.error(f"{e}")
                 else:
                     logging.error(f"The phone number: {phone_number} is not valid! Passing by.")
-        
+
             autoWhatsApp_client.driver.close() # Close the chromedriver
             break

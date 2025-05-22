@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-# XPATH name of 'Send Button' for English WhatsApp account. Change to your language if your whatsapp account is in another language
+# XPATH name of 'Send Button' for English WhatsApp account. Change the equivalent of word 'Send' in your language if your whatsapp account is in another language
 SEND_BUTTON_NAME = 'Send'
 
 # Validates and normalizes an international phone numbers

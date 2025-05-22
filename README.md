@@ -9,7 +9,8 @@ Automate WhatsApp messaging using Python and Selenium.
 
 ## 📌 Introduction
 
-**Auto WhatsApp** is a Python-based tool designed to automate the process of sending messages through WhatsApp Web. Utilizing Selenium WebDriver, it simulates user interactions to send messages to specified contacts or groups.
+**Auto WhatsApp** is a Python-based tool designed to automate the process of sending messages through WhatsApp Web. Utilizing Selenium WebDriver, it simulates user interactions to send messages to specified individual or multiple contacts.
+
 
 ## ✨ Features
 

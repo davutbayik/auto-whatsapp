@@ -85,9 +85,17 @@ class autoWhatsApp(): # Custom class for automating whatsapp
             message_box.send_keys(message) # Write message directly in one line by sending as a string
 
     def upload_file(self, attachments):
-        self.wait.until(EC.presence_of_element_located((By.XPATH, "//span[@data-icon='plus-rounded']"))).click() # Click the clip symbol
+
+        # Try finding attachment button
+        try:
+            self.driver.find_element(By.XPATH, "//span[@data-icon='plus-rounded']").click() # Click send text button
+            self.wait.until(EC.presence_of_element_located((By.XPATH, "//span[@data-icon='plus-rounded']"))).click() # Click the clip symbol
+        except:
+            self.driver.find_element(By.XPATH, "//span[@data-icon='plus']").click() # Click send text button
+            self.wait.until(EC.presence_of_element_located((By.XPATH, "//span[@data-icon='plus']"))).click() # Click the clip symbol
+            
         time.sleep(0.5)
-    
+     
         for attachment in attachments:
             self.wait.until(EC.presence_of_element_located((By.XPATH, "//input[@type='file']"))).send_keys(attachment) # Add file to the inputs
             time.sleep(0.5)
@@ -154,18 +162,26 @@ def send_individual_contact(phone_number: str, message: str, headless: str, atta
                 
                 # Write text messages (string or a list of strings)
                 autoWhatsApp_client.write_text(message)
+                time.sleep(0.5)
 
-                # Add files if any
-                if attachments:
-                    autoWhatsApp_client.upload_file(attachments) # Upload a file (image, document etc.)
-                
-                # Send message
                 try:
                     autoWhatsApp_client.send_message() # Send the message
-                    logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
+                
+                    # Add files if any
+                    if attachments:
+                        autoWhatsApp_client.upload_file(attachments) # Upload a file (image, document etc.)
+                    
+                    # Send message
+                    try:
+                        autoWhatsApp_client.send_message() # Send the message
+                        logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
+                    except Exception as e:
+                        logging.error(f"Encountered an Error while sending message to number: {phone_number}")
+                        logging.error(f"{e}")
+                
                 except Exception as e:
-                    logging.error(f"Encountered an Error while sending message to number: {phone_number}")
-                    logging.error(f"{e}")
+                        logging.error(f"Encountered an Error while sending message to number: {phone_number}")
+                        logging.error(f"{e}")
 
                 autoWhatsApp_client.driver.close() # Close the chromedriver
                 break   

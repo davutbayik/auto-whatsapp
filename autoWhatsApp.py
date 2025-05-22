@@ -228,18 +228,26 @@ def send_multiple_contacts(phone_numbers: list, message: str, headless: str, att
                     
                     # Write text messages (string or a list of strings)
                     autoWhatsApp_client.write_text(message)
-
-                    # Add files if any
-                    if attachments:
-                        autoWhatsApp_client.upload_file(attachments) # Upload a file (image, document etc.)
-
-                    # Send message
+                    time.sleep(0.5)
+    
                     try:
                         autoWhatsApp_client.send_message() # Send the message
-                        logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
+                    
+                        # Add files if any
+                        if attachments:
+                            autoWhatsApp_client.upload_file(attachments) # Upload a file (image, document etc.)
+                        
+                        # Send message
+                        try:
+                            autoWhatsApp_client.send_message() # Send the message
+                            logging.info(f"Message successfully sent to number: {phone_number} with {len(attachments)} attachment(s).")
+                        except Exception as e:
+                            logging.error(f"Encountered an Error while sending message to number: {phone_number}")
+                            logging.error(f"{e}")
+                    
                     except Exception as e:
-                        logging.error(f"Encountered an Error while sending message to number: {phone_number}")
-                        logging.error(f"{e}")
+                            logging.error(f"Encountered an Error while sending message to number: {phone_number}")
+                            logging.error(f"{e}")
                 else:
                     logging.error(f"The phone number: {phone_number} is not valid! Passing by.")
 

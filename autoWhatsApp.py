@@ -10,6 +10,7 @@ from selenium.webdriver.common.keys import Keys
 
 # XPATH name of 'Send Button' for English WhatsApp account. Change the equivalent of word 'Send' in your language if your whatsapp account is in another language
 SEND_BUTTON_NAME = 'Send'
+PENDING_MARK = ' Pending '
 
 # Validates and normalizes an international phone numbers
 def is_valid_phone_number(phone_number):
@@ -58,7 +59,8 @@ class autoWhatsApp(): # Custom class for automating whatsapp
         self.wait = WebDriverWait(self.driver, 100000) # Wait before timeout exception
         
         self.send_button_name = SEND_BUTTON_NAME
-        
+        self.pending_mark_name = PENDING_MARK
+     
         # Wait until QR scan page loads anc checks whether account is logged out
         self.logout_wait = WebDriverWait(self.driver, 5) # Should be increased in case of slow internet or old operating system.
         
@@ -88,10 +90,10 @@ class autoWhatsApp(): # Custom class for automating whatsapp
 
         # Try finding attachment button
         try:
-            self.driver.find_element(By.XPATH, "//span[@data-icon='plus-rounded']").click() # Click send text button
+            self.driver.find_element(By.XPATH, "//span[@data-icon='plus-rounded']")
             self.wait.until(EC.presence_of_element_located((By.XPATH, "//span[@data-icon='plus-rounded']"))).click() # Click the clip symbol
         except:
-            self.driver.find_element(By.XPATH, "//span[@data-icon='plus']").click() # Click send text button
+            self.driver.find_element(By.XPATH, "//span[@data-icon='plus']")
             self.wait.until(EC.presence_of_element_located((By.XPATH, "//span[@data-icon='plus']"))).click() # Click the clip symbol
             
         time.sleep(0.5)
@@ -112,7 +114,7 @@ class autoWhatsApp(): # Custom class for automating whatsapp
             self.driver.find_element(By.XPATH, f"//div[@aria-label='{self.send_button_name}']").click() # Click send file button
 
         time.sleep(2)
-        self.wait.until(EC.invisibility_of_element_located((By.XPATH, "//span[@aria-label=' Pending ']"))) # Wait until sending (pending) icon disappears
+        self.wait.until(EC.invisibility_of_element_located((By.XPATH, f"//span[@aria-label='{self.pending_mark_name}']"))) # Wait until sending (pending) icon disappears
 
     def checkLogout(self):
     

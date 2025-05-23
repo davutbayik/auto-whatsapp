@@ -98,6 +98,12 @@ from autoWhatsApp import send_multiple_contacts
  )
 ```
 
+🎥 Example Demo
+
+
+https://github.com/user-attachments/assets/420c7d9a-481c-4250-9122-3d40a62e4fd8
+
+
 ## 📄 License
 
 This project is licensed under the terms of the [MIT License](LICENSE).  
